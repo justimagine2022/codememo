@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code memo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <h2 id="modalWindow">モーダルウィンドウ</h2>
+  <section>
+    <p>マスクを画面全体に表示させる</p>
+    <pre>
+      <code>
+        #mask {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>モーダルを中央に配置する</p>
+    <pre>
+      <code>
+        #modal {
+          position: absolute;
+          top: 40px;
+          right: 0;
+          left: 0;
+          margin: 0 auto;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>クラスが付いている時モーダルを画面外上部に配置</p>
+    <pre>
+      <code>
+        #modal.hidden {
+          transform: translateY(-500px);
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ダブルクリックした時テキスト選択出来ないようにする</p>
+    <pre>
+      <code>
+        #close {
+          user-select: none;
+        }
+      </code>
+    </pre>
+  </section>
+
+ 
+  
+</body>
+</html>
