@@ -58,7 +58,355 @@
     </pre>
   </section>
 
- 
-  
+  <h2 id="modalWindow">ハンバーガーメニュー</h2>
+  <section>
+    <p>マテリアルアイコンのダウンロード</p>
+    <pre>
+      <code>
+       1.material icons guideで検索  https://mdi.invite-comm.jp/
+
+       2.icon fonts for the webをクリック
+
+       3.ページ下部にあるlinkタグをコピーしてhtmlのhead要素内に貼り付ける
+       &lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"&gt;
+
+       4.ページ上部にあるmaterial icons libralyをクリック
+
+       5.左上の検索バーに「menu」などと入力し検索
+
+       6.該当のアイコンをクリックすると左下にselected iconと出るのでクリック
+
+       7.下部にあるlinkをコピーしてhtmlのbody内に貼り付ける
+
+       三本線のアイコンは「menu」で検索
+       ばつ印のアイコンは「close」で検索
+
+       &lt;span class="material-icons"&gt;menu&lt;/span&gt;
+       全部検索しなくてもmenuの部分をcloseに変えるだけでばつ印のアイコンが表示される
+
+       注意:マテリアルアイコンのリンクを読み込んだ後に、CSSのリンクを読み込む。
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ヘッダーのCSSスタイリング</p>
+    <pre>
+      <code>
+        body {
+          margin: 0;
+          font-family: Verdana, sans-serif;
+        }
+        
+        a {
+          text-decoration: none;
+          color: inherit;
+          display: inline-block;
+        }
+        
+        h1 {
+          margin: 0;
+          line-height: 38px;
+          font-size: 22px;
+        }
+        
+        header {
+          display: flex; /* 左右に配置したい要素を両方divで囲んでおく*/
+          /* justify-content: space-between; でも良い*/
+          padding: 16px;
+        }
+        
+        .sp-menu { /*div要素*/
+          margin-left: auto;
+        }
+        
+        .sp-menu #open { /*マテリアルアイコン*/
+          font-size: 32px;
+          line-height: 38px; /*h1と行ボックスの高さを合わせる*/
+          cursor: pointer;
+        }
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>メニューを表示させるdivを作る</p>
+    <pre>
+      <code>
+        headerの下部にdivを配置
+        &lt;div class=&quot;overlay&quot;&gt;
+          &lt;span class=&quot;material-icons&quot;&gt;close&lt;/span&gt;
+          &lt;nav&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&quot;&quot;&gt;Menu&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;&quot;&gt;Menu&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;&quot;&gt;Menu&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/nav&gt;
+        &lt;/div&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>overlayを画面いっぱいに表示させる</p>
+    <pre>
+      <code>
+        .overlay {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: rgba(255, 255, 255, .95);
+          text-align: center;
+          padding: 64px;
+          opacity: 0; /*後でアニメーションを設定する場合はopacityを使う*/
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ばつ印を右側に絶対配置する</p>
+    <pre>
+      <code>
+        .overlay #close {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>本文の上に固定配置された透明のdivがあっても下のテキストを選択できるようにする</p>
+    <pre>
+      <code>
+        .overlay {
+          pointer-events: none; 
+        }
+
+        元に戻すときは
+        .overlay {
+          pointer-events: auto; 
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>クラス名に迷った時</p>
+    <pre>
+      <code>
+        hidden 隠れている状態
+        hide 隠す
+        show 表示させる
+
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>showクラスが付いたら下から現れる時のスタイリング</p>
+    <pre>
+      <code>
+        li {
+          margin-top: 24px;
+          transform: translateY(16px);
+          transition: transform .3s, opacity .3s;
+          opacity: 0;
+        }
+        
+        li.show {
+          transform: none;
+          opacity: 1;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>時間差で現れるようにするスタイリング</p>
+    <pre>
+      <code>
+        /*overlayにshowクラスが付いた時li要素の１番目に対して0.1秒後に動作するように設定*/
+        .overlay.show li:nth-child(1) { 
+          transition-delay: .1s;
+        }
+        
+        .overlay.show li:nth-child(2) {
+          transition-delay: .2s;
+        }
+        
+        .overlay.show li:nth-child(3) {
+          transition-delay: .3s;
+        }
+      </code>
+    </pre>
+  </section>
+  <h2 id="accordion">アコーディオンUI</h2>
+  <section>
+    <p>dlタグでアコーディオンメニューをマークアップする</p>
+    <pre>
+      <code>
+        &lt;dl&gt;
+          &lt;div&gt;  スタイリングしやすい様にdtとddをdivで囲っておく
+            &lt;dt&gt;質問です&lt;/dt&gt;
+            &lt;dd&gt;回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。&lt;/dd&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;dt&gt;質問です&lt;/dt&gt;
+            &lt;dd&gt;回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。&lt;/dd&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;dt&gt;質問です&lt;/dt&gt;
+            &lt;dd&gt;回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。回答です。&lt;/dd&gt;
+          &lt;/div&gt;
+        &lt;/dl&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>dlのスタイリング</p>
+    <pre>
+      <code>
+        h1 {
+          font-size: 16px;
+          border-bottom: 1px solid;
+          padding: 8px 16px;
+          margin-bottom: 16px;
+        }
+        
+        dl {  dlとddには自動でmarginがついているので一度リセットする
+          margin: 0;
+        }
+        
+        dl > div {
+          margin-bottom: 8px;
+        }
+        
+        dt {
+          padding: 8px;
+        }
+        
+        dd {
+          margin: 0;
+          padding: 8px;
+        }
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>擬似要素で文頭に文字を入れるスタイリング</p>
+    <pre>
+      <code>
+        dt::before {
+          content: 'Q. ';
+        }
+
+        dd::before {
+          content: 'A. ';
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>擬似要素で文末に文字を入れ絶対配置で位置を指定するスタイリング</p>
+    <pre>
+      <code>
+        dt {
+          padding: 8px;
+          cursor: pointer;
+          user-select: none;
+          position: relative;  擬似要素を指定した親要素に対して基準となる指定
+        }
+
+        dt::after {
+          content: '+';
+          position: absolute;  親要素に対して絶対配置
+          top: 8px;
+          right: 16px;
+        }
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>dt要素を全部取得してイベントを追加</p>
+    <pre>
+      <code>
+        const dts = document.querySelectorAll('dt');
+
+        dts.forEach(dt => {
+          dt.addEventListener('click', () => {
+            dt.parentNode.classList.toggle('appear');
+          });  dtの親要素のdivに対してクラスをつけ外しする
+        });
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>appearクラスが付いた時回答を表示させて＋を回転させるスタイリング</p>
+    <pre>
+      <code>
+        dl > div.appear dd {
+          display: block;
+        }
+        
+        dl > div.appear dt::after {
+          transform: rotate(45deg);
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>＋とddのアニメーション</p>
+    <pre>
+      <code>
+        dt::after {
+          content: '+';
+          position: absolute;
+          top: 8px;
+          right: 16px;
+          transition: .3s;  ３秒かけて45度回転させる
+        }
+
+        dd {
+          margin: 0;
+          padding: 8px;
+          display: none;  
+          animation: .3s fadeIn;
+        }
+        displayをnoneにして非表示にしたものはtransitionが使えないので、
+        keyframesでアニメーションさせる
+        opacityで非表示にしたものはtransitionが使える
+
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          100% {
+            opacity: 1;
+            transform: none;
+          }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ひとつ開いたらひとつ閉じる動きの実装</p>
+    <pre>
+      <code>
+        dts.forEach(dt => {
+          dt.addEventListener('click', () => {
+            dt.parentNode.classList.toggle('appear');
+      
+            dts.forEach(el => {  
+              if (dt !== el) {  クリックされたdt以外のdtに指定
+                el.parentNode.classList.remove('appear');
+              }
+            });
+          });
+        });
+      </code>
+    </pre>
+  </section>
 </body>
 </html>
