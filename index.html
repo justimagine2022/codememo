@@ -408,5 +408,1467 @@
       </code>
     </pre>
   </section>
+  <h2 id="tabmenu">タブメニュー</h2>
+  <section>
+    <p>タブメニューをマークアップする</p>
+    <pre>
+      <code>
+        &lt;div class=&quot;container&quot;&gt;  真ん中に配置したいのでdivで囲う
+        &lt;ul class=&quot;menu&quot;&gt;  メニューなのでulにし対応する内容と切り替えたいのでliはaタグで囲うページ遷移しないのでパウンド記号でOK
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;サイトの概要&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;サービス内容&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#&quot;&gt;お問い合わせ&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;section class="content"&gt;
+          サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。
+        &lt;/section&gt;
+        &lt;section class="content"&gt;
+          サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。
+        &lt;/section&gt;
+        &lt;section class="content"&gt;
+          お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。
+        &lt;/section&gt;
+      &lt;/div&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>タブメニューのスタイリング</p>
+    <pre>
+      <code>
+        body {
+          font-size: 14px;
+        }
+        
+        .container {  幅を指定して余白を左右均等に割り振る
+          width: 500px;
+          margin: 30px auto;
+        }
+        
+        .menu {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+        }
+        
+        .menu li a {  a要素はデフォルトでinline要素なので大きさを指定できるように変更
+          display: inline-block;
+          width: 100px;
+        }
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>activeなタブ以外のタブをホバーした時の指定</p>
+    <pre>
+      <code>
+        .menu li a:not(.active):hover {
+          opacity: 0.5;
+          transition: opacity 0.3s;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>タブにクリックイベントを設置しページ遷移をキャンセルする</p>
+    <pre>
+      <code>
+        const menuItems = document.querySelectorAll('.menu li a');
+
+        menuItems.forEach(item => {
+          item.addEventListener('click', e => {
+            e.preventDefault();  a要素のリンク先にページ遷移する規定の動作をキャンセル
+
+            item.classList.add('active');
+          });
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>activeクラスを付け替える</p>
+    <pre>
+      <code>
+        const menuItems = document.querySelectorAll('.menu li a');
+
+        menuItems.forEach(clickedItem => {
+          clickedItem.addEventListener('click', e => {
+            e.preventDefault();
+
+            menuItems.forEach(item => {  activeクラスをつける前に一度全部のactiveクラスを外す
+              item.classList.remove('active');
+            });
+
+            clickedItem.classList.add('active');
+          });
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>menuとcontentを紐づける</p>
+    <pre>
+      <code>
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;ul class=&quot;menu&quot;&gt;  カスタムデータ属性でそれぞれのidと紐づける
+            &lt;li&gt;&lt;a href=&quot;#&quot; class=&quot;active&quot; data-id=&quot;about&quot;&gt;サイトの概要&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot; data-id=&quot;service&quot;&gt;サービス内容&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot; data-id=&quot;contact&quot;&gt;お問い合わせ&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;section class=&quot;content active&quot; id=&quot;about&quot;&gt;
+            サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。サイトの概要。
+          &lt;/section&gt;
+          &lt;section class=&quot;content&quot; id=&quot;service&quot;&gt;
+            サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。サービス内容。
+          &lt;/section&gt;
+          &lt;section class=&quot;content&quot; id=&quot;contact&quot;&gt;
+            お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。お問い合わせ。
+          &lt;/section&gt;
+        &lt;/div&gt;
+
+
+        const menuItems = document.querySelectorAll('.menu li a');
+        const contents = document.querySelectorAll('.content');
+
+        menuItems.forEach(clickedItem => {
+          clickedItem.addEventListener('click', e => {
+            e.preventDefault();
+
+            menuItems.forEach(item => {
+              item.classList.remove('active');
+            });
+
+            clickedItem.classList.add('active');
+
+            contents.forEach(content => {
+              content.classList.remove('active');
+            });
+
+            document.getElementById(clickedItem.dataset.id).classList.add('active');
+          });  クリックしたa要素のカスタムデータ属性に紐づいたidを取得してクラスをつける
+        });
+      </code>
+    </pre>
+  </section>
+  <h2 id="carousel">カルーセル</h2>
+  <section>
+    <p>画像を表示する領域のスタイリング</p>
+    <pre>
+      <code>
+        &lt;div class=&quot;container&quot;&gt;
+
+        &lt;/div&gt;
+
+
+        .container {
+          width: 80%;
+          height: 220px;
+          margin: 16px auto;
+          outline: 8px solid red;
+        }
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>３つの画像を配置するスタイリング</p>
+    <pre>
+      <code>
+        .container {
+          width: 80%;
+          height: 220px;
+          margin: 16px auto;
+          overflow: hidden;  はみ出した分は隠す指定
+        }
+        
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          height: 100%;  .containerに対して100%
+          display: flex;
+        }
+        
+        li {
+          height: 100%;  ulに対して100%
+          min-width: 100%; flex-basisよりmin-widthが優先されるのでmin-widthを使う
+        }
+        
+        li img {
+          width: 100%;
+          height: 100%;  親要素であるliとulにも100%を指定しないとうまくいかない
+          object-fit: cover;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ボタンのスタイリング</p>
+    <pre>
+      <code>
+        #prev,
+        #next {
+          position: absolute;  divに対して絶対配置する
+          top: 50%;  上端がdivの高さの50%の位置になる
+          transform: translateY(-50%);  ボタンの高さの50%分上にずらしてあげる
+          border: none;
+          background: rgba(0, 0, 0, .8);
+          color: #fff;
+          font-size: 24px;
+          padding: 0 8px 4px;
+          cursor: pointer;
+        }
+
+        #prev:hover,
+        #next:hover {
+          opacity: .8;
+        }
+
+        #prev {
+          left: 0;
+        }
+
+        #next {
+          right: 0;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>クリックイベントの実装</p>
+    <pre>
+      <code>
+        const next = document.getElementById('next');
+        const prev = document.getElementById('prev');
+        const ul = document.querySelector('ul');
+        const slides = ul.children;  liを全て取得する
+        let currentIndex = 0;  １つのスライドの長さ × currentIndex番目のスライド
+
+        next.addEventListener('click', () => {
+          currentIndex++;  ボタンを押すたびに1増やす
+          const slideWidth = slides[0].getBoundingClientRect().width;  最初のliの長さを取得
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        });  マイナス方向にスライドさせるので-1をかける 単位を忘れない
+
+        prev.addEventListener('click', () => {
+          currentIndex--;  prevはボタンを押すたびに1ずつ減らす
+          const slideWidth = slides[0].getBoundingClientRect().width;
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        });
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>最初と最後のスライドが表示された時、ボタンを隠す処理</p>
+    <pre>
+      <code>
+        function updateButtons() {
+          prev.classList.remove('hidden');  ifで指定した場合以外はhiddenを外す
+          next.classList.remove('hidden');
+      
+          if (currentIndex === 0) {  １枚目のスライド０番目
+            prev.classList.add('hidden');
+          }
+          if (currentIndex === slides.length - 1) {  ３枚目のスライドは２番目なので２を表現するために-1を引く
+            next.classList.add('hidden');
+          }
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>updateButtons関数をどこで呼び出すか</p>
+    <pre>
+      <code>
+        const next = document.getElementById('next');
+        const prev = document.getElementById('prev');
+        const ul = document.querySelector('ul');
+        const slides = ul.children;
+        let currentIndex = 0;
+        
+        function updateButtons() {
+          prev.classList.remove('hidden');
+          next.classList.remove('hidden');
+      
+          if (currentIndex === 0) {
+            prev.classList.add('hidden');
+          }
+          if (currentIndex === slides.length - 1) {
+            next.classList.add('hidden');
+          }
+        }
+      
+        updateButtons();  currentIndexが0の時ボタンを消しておきたいから最初に呼び出す
+      
+        next.addEventListener('click', () => {
+          currentIndex++;
+          updateButtons();  ボタンを押してcurrentIndexの値が変わるたびに呼び出す
+          const slideWidth = slides[0].getBoundingClientRect().width;
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        });
+      
+        prev.addEventListener('click', () => {
+          currentIndex--;
+          updateButtons();  ボタンを押してcurrentIndexの値が変わるたびに呼び出す
+          const slideWidth = slides[0].getBoundingClientRect().width;
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>重複しているコードは関数にまとめる</p>
+    <pre>
+      <code>
+        function moveSlides() {  関数にまとめてボタンを押した時に実行
+          const slideWidth = slides[0].getBoundingClientRect().width;
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        }
+      
+        updateButtons();
+      
+        next.addEventListener('click', () => {
+          currentIndex++;
+          updateButtons();
+          moveSlides();
+        });
+      
+        prev.addEventListener('click', () => {
+          currentIndex--;
+          updateButtons();
+          moveSlides();
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>カルーセル下に丸いボタンを生成する</p>
+    <pre>
+      <code>
+        &lt;section class=&quot;carousel&quot;&gt;  カルーセルとボタンをセクションで囲う
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;img src=&quot;img/a.png&quot;&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;img src=&quot;img/b.png&quot;&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;img src=&quot;img/c.png&quot;&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+      
+          &lt;button id=&quot;prev&quot;&gt;&amp;laquo;&lt;/button&gt;
+          &lt;button id=&quot;next&quot;&gt;&amp;raquo;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;nav&gt;
+          &lt;button class=&quot;current&quot;&gt;&lt;/button&gt;
+          &lt;button&gt;&lt;/button&gt;  ボタンを作りcurrentクラスをつける
+          &lt;button&gt;&lt;/button&gt;  ボタンはjsで生成するのでコメントにしておく
+        &lt;/nav&gt;
+      &lt;/section&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>カルーセル下のボタンのスタイリング</p>
+    <pre>
+      <code>
+        nav {
+          margin-top: 16px;
+          text-align: center;
+        }
+        
+        nav button {
+          width: 16px;  widthとheightを同じ値にしてborder-radiusを50%にすると丸くなる
+          height: 16px;
+          border-radius: 50%;
+          background: #ddd;
+          border: none;
+        }
+        
+        nav .current {
+          background: #999;
+        }
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ボタンをjsで動的に生成する</p>
+    <pre>
+      <code>
+        const next = document.getElementById('next');
+        const prev = document.getElementById('prev');
+        const ul = document.querySelector('ul');
+        const slides = ul.children;
+        const dots = [];  ボタンを格納する配列を作る
+        let currentIndex = 0;
+      
+        function updateButtons() {
+          prev.classList.remove('hidden');
+          next.classList.remove('hidden');
+      
+          if (currentIndex === 0) {
+            prev.classList.add('hidden');
+          }
+          if (currentIndex === slides.length - 1) {
+            next.classList.add('hidden');
+          }
+        }
+      
+        function moveSlides() {
+          const slideWidth = slides[0].getBoundingClientRect().width;
+          ul.style.transform = `translateX(${-1 * slideWidth * currentIndex}px)`;
+        }
+      
+        function setupDots() {
+          for (let i = 0; i < slides.length; i++) {  ボタンを３個作るのでループ処理する
+            const button = document.createElement('button');
+            dots.push(button);
+            document.querySelector('nav').appendChild(button);
+          }
+          dots[0].classList.add('current');  最初のボタンにcurrentクラスをつける
+        }
+      
+        updateButtons();
+        setupDots();  ページを読み込んですぐに呼び出す
+      
+        next.addEventListener('click', () => {
+          currentIndex++;
+          updateButtons();
+          moveSlides();
+        });
+      
+        prev.addEventListener('click', () => {
+          currentIndex--;
+          updateButtons();
+          moveSlides();
+        });
+      }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>丸いボタンにクリックイベントを設置する</p>
+    <pre>
+      <code>
+        function setupDots() {
+          for (let i = 0; i < slides.length; i++) {
+            const button = document.createElement('button');
+            button.addEventListener('click', () => {  クリックイベント
+              currentIndex = i; i番目のボタンがクリックされたのでcurrentIndexにiを代入
+              dots.forEach(dot => {  currentクラスを一度全部外してから
+                dot.classList.remove('current');
+              });
+              dots[currentIndex].classList.add('current');  currentIndex番目のボタンにcurrentクラスをつける
+              updateButtons();
+              moveSlides();
+            });
+            dots.push(button);
+            document.querySelector('nav').appendChild(button);
+          }
+          dots[0].classList.add('current');
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>prevとnextを押したときもcurrentクラスをつけ外しする</p>
+    <pre>
+      <code>
+        function updateDots() {  currentクラスのつけ外しする関数にまとめて他のところでも使える様にする
+          dots.forEach(dot => {
+            dot.classList.remove('current');
+          });
+          dots[currentIndex].classList.add('current');
+        }
+      
+        updateButtons();
+        setupDots();
+      
+        next.addEventListener('click', () => {
+          currentIndex++;
+          updateButtons();
+          updateDots();  nextを押したときもcurrentをつけ外しする
+          moveSlides();
+        });
+      
+        prev.addEventListener('click', () => {
+          currentIndex--;
+          updateButtons();
+          updateDots();  prevを押したときもcurrentをつけ外しする
+          moveSlides();
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>画面のサイズが変わった時の表示崩れを防ぐ</p>
+    <pre>
+      <code>
+        window.addEventListener('resize', () => {
+          moveSlides();  この関数は上を参照する
+        });
+      </code>
+    </pre>
+  </section>
+  <h2 id="carousel">おみくじアプリ</h2>
+  <section>
+    <p>ボタンをクリックした時のスタイル押し込まれた様にする</p>
+    <pre>
+      <code>
+        button {
+          all: unset;
+          color: #fff;
+          background: red;
+          border-radius: 8px;
+          padding: 8px 0;
+          width: 100%;
+          text-align: center;
+          margin-top: 16px;
+          cursor: pointer;
+          box-shadow: 0 4px #7a0000;  はじめに4pxの影をつけておく
+        }
+        
+        button:hover {
+          opacity: .8;
+        }
+        
+        button:active {
+          box-shadow: 0 1px #7a0000;
+          transform: translateY(3px);  押し込まれた時影を1pxにして下に3px移動させる
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ランダムな整数値を表示させる</p>
+    <pre>
+      <code>
+        btn.addEventListener('click', () => {
+          const n = Math.floor(Math.random() * 3);  クリックするたびにランダムな整数値を生成
+          result.textContent = n;  かける3だと2以下の整数値
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>スイッチ文で文字列を出し分ける</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const result = document.getElementById('result');
+
+        btn.addEventListener('click', () => {
+          const n = Math.floor(Math.random() * 3);
+
+          switch (n) {
+            case 0:
+              result.textContent = '大吉';
+              break;
+            case 1:
+              result.textContent = '中吉';
+              break;
+            case 2:
+              result.textContent = '凶';
+              break;
+          }
+        
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>もっと短く書ける配列を使ってみる</p>
+    <pre>
+      <code>
+        btn.addEventListener('click', () => {
+          const results = ['大吉', '中吉', '凶', '小吉'];  配列に格納する
+          const n = Math.floor(Math.random() * results.length);  lengthプロパティを使うと要素が
+          増えても修正箇所が減るので便利
+      
+          result.textContent = results[n];
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>確率を操作する</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const result = document.getElementById('result');
+        const results = ['大吉', '小吉', '中吉', '吉', '末吉', '凶', '大凶'];
+      
+        btn.addEventListener('click', () => {
+          const n = Math.random(); //0以上1未満の数を生成する0.
+          if (n < 0.05) {  //確率5%
+            result.textContent = results[6];
+          } else if (n < 0.2) {  //確率15% 20-5=15
+            result.textContent = results[5];
+          } else {  //確率80%  100-15-5=80
+            result.textContent = results[Math.floor(Math.random() * 5)];  //0-4までの整数値
+          }
+          
+        });
+      </code>
+    </pre>
+  </section>
+  <h2 id="password">パスワードジェネレーター</h2>
+  <section>
+    <p>htmlでマークアップする</p>
+    <pre>
+      <code>
+        &lt;body&gt;
+          &lt;main&gt;
+            &lt;p&gt;sajkl;fafa&lt;/p&gt;
+            &lt;button&gt;パスワードを生成&lt;/button&gt;
+            &lt;fieldset&gt;
+              &lt;label&gt;
+                長さ(8)
+                &lt;input type=&quot;range&quot;&gt;
+              &lt;/label&gt;
+              &lt;label&gt;
+                数字
+                &lt;input type=&quot;checkbox&quot;&gt;
+              &lt;/label&gt;
+              &lt;label&gt;
+                記号
+                &lt;input type=&quot;checkbox&quot;&gt;
+              &lt;/label&gt;
+            &lt;/fieldset&gt;
+          &lt;/main&gt;
+          
+        &lt;/body&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>CSSでスタイリング</p>
+    <pre>
+      <code>
+        main {
+          width: 380px;
+          margin: 24px auto 0;
+          box-shadow: 0 0 8px #999;
+          padding: 16px;
+          border-radius: 8px;
+        }
+        
+        p {
+          margin: 0;
+          font-size: 24px;
+          text-align: center;
+          border: 1px solid #aaa;
+          border-radius: 4px;
+          padding: 12px 0;
+          font-family:'Courier New', Courier, monospace;
+        }
+        
+        button {
+          all: unset;
+          width: 100%;
+          color: #fff;
+          background: #08c;
+          border-radius: 8px;
+          padding: 12px 0;
+          text-align: center;
+          margin-top: 16px;
+          cursor: pointer;
+        }
+        
+        button:hover {
+          opacity: .6;
+        }
+        
+        button:active {
+          opacity: .4;
+        }
+        
+        legend {
+          padding: 0 8px;
+        }
+        
+        fieldset {
+          border-radius: 8px;
+          border: 1px dashed #aaa;
+          margin-top: 16px;
+          padding: 16px;
+          display: flex;
+          justify-content: space-between;
+        }
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>スライダーを操作できるようにする</p>
+    <pre>
+      <code>
+        &lt;label&gt;  スライダーの結果を表示する部分をspanタグで囲いidをつける
+          長さ(&lt;span id=&quot;password-length&quot;&gt;8&lt;/span&gt;)
+          &lt;input type=&quot;range&quot; id=&quot;slider&quot; min=&quot;8&quot; max=&quot;24&quot; value=&quot;8&quot;&gt;  
+        &lt;/label&gt;  最小値、最大値、初期値を設定できる
+    </code>
+    </pre>
+  </section>
+  <section>
+    <p>スライダーを動かした時、spanタグの中の値を表示させる</p>
+    <pre>
+      <code>
+        const slider = document.getElementById('slider');
+        const passwordLength = document.getElementById('password-length');
+
+        slider.addEventListener('input', () => {  スライダーを動かした時
+          passwordLength.textContent = slider.value;  スライダーの値を表示
+        });
+
+        #password-length {  数字ががたつかないようにスタイルを整える
+          width: 24px;
+          display: inline-block;
+          text-align: center;
+        }
+      </code>
+    </pre>
+  <section>
+    <p>ランダムな文字列を生成する</p>
+    <pre>
+      <code>
+        const slider = document.getElementById('slider');
+        const passwordLength = document.getElementById('password-length');
+        const btn = document.getElementById('btn');
+        const result = document.getElementById('result');
+        const words = 'abcdefghijklmnopqrstuvwxyz';
+        const seed = words + words.toUpperCase();  wordsにwordsの大文字を合わせた文字列を作る
+        
+        slider.addEventListener('input', () => {
+          passwordLength.textContent = slider.value;
+        });
+        
+        btn.addEventListener('click', () => {
+          let password = '';  ボタンを押すたびにpasswordの中身を一度空にするのでクリックイベントの中に変数を宣言する
+
+          for (let i = 0; i < slider.value; i++) {  スライダーの数字分だけループを回す
+            password += seed[Math.floor(Math.random() * seed.length)];
+          }  文字列をスライダーの値の分だけ足し上げる
+          result.textContent = password;
+        });  
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>チェックボックスをチェックした時文字列を連結する</p>
+    <pre>
+      <code>
+        const slider = document.getElementById('slider');
+        const passwordLength = document.getElementById('password-length');
+        const btn = document.getElementById('btn');
+        const result = document.getElementById('result');
+        const numbersCheckbox = document.getElementById('numbers-checkbox');
+        const symbolsCheckbox = document.getElementById('symbols-checkbox');
+        const words = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        const symbols ='!"#$%&()';
+        
+        
+        function showPassword() {  ボタンを押した時とページを読み込んだ時に動作させたいので関数にまとめる
+          let password = '';  ボタンを押すたび初期値に戻したいので中に書く
+          let seed = words + words.toUpperCase();
+
+          if (numbersCheckbox.checked) {  チェックボックスをチェックした時
+            seed += numbers;
+          }
+          if (symbolsCheckbox.checked) {
+            seed += symbols;
+          }
+          for (let i = 0; i < slider.value; i++) {
+            password += seed[Math.floor(Math.random() * seed.length)];
+          }
+          result.textContent = password;
+        }
+
+        showPassword();  ページ読み込み時
+
+        slider.addEventListener('input', () => {
+          passwordLength.textContent = slider.value;
+        });
+        
+        btn.addEventListener('click', () => {
+          showPassword();  ボタンクリック時
+        });  
+      </code>
+    </pre>
+  </section>
+  <h2 id="coutdown-timer">カウントダウンタイマー</h2>
+  <section>
+    <p>htmlでマークアップする</p>
+    <pre>
+      <code>
+        &lt;main&gt;
+        &lt;p&gt;00:03&lt;/p&gt;
+        &lt;button&gt;Start&lt;/button&gt;
+        &lt;/main&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>終了時間をもとめる</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const timer = document.getElementById('timer');
+      
+        btn.addEventListener('click', () => {
+          const endTime = new Date().getTime() + 3 * 1000;
+        });  m秒単位で取得するので、3に1000をかけてm秒単位に合わせる
+        まず最初に終了時刻を求める。現在時刻＋終了までの時間
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>残り時間をもとめる</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const timer = document.getElementById('timer');
+        let endTime;  check関数の中でも使えるように外に出して後で代入する
+
+        function check() {  残り時間 = 終了時刻 - 現在時刻
+          const countDown = endTime - new Date().getTime();
+
+          timer.textContent = countDown;
+        }
+
+        btn.addEventListener('click', () => {
+          endTime = new Date().getTime() + 3 * 1000;
+
+          setInterval(check, 100);  引数に関数を渡す ()をつけないこと 100m秒ごとに実行
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>0以下になったらカウントダウンを止める</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const timer = document.getElementById('timer');
+        let endTime;
+        let intervalId;
+
+        function check() {
+          let countDown = endTime - new Date().getTime();
+
+          if (countDown < 0) {
+            clearInterval(intervalId);
+            countDown = 3 * 1000;
+          }
+          timer.textContent = countDown;
+        }
+
+        btn.addEventListener('click', () => {
+          endTime = new Date().getTime() + 3 * 1000;
+
+          intervalId = setInterval(check, 100);
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ミリ秒を秒に変換して見やすく分と秒で表示させる</p>
+    <pre>
+      <code>
+        const btn = document.getElementById('btn');
+        const timer = document.getElementById('timer');
+        let endTime;
+        let intervalId;
+
+        function check() {
+          let countDown = endTime - new Date().getTime();
+
+          if (countDown < 0) {
+            clearInterval(intervalId);
+            countDown = 3 * 1000;
+            // countDownが0になった時disabbledをfalseにする
+            btn.disabled = false;
+          }
+          // 扱いやすいようにミリ秒を秒に変換して小数点以下はいらないので切り捨て
+          const totalSeconds = Math.floor(countDown / 1000);
+          // 80秒 → 1分20秒
+          // 80 ÷ 60 = 1 余り 20
+          // 80 / 60 1.333333... → 1 小数点以下切り捨て
+          // 80 % 60 = 20
+          const minutes = Math.floor(totalSeconds / 60);
+          const seconds = totalSeconds % 60;
+
+          // padStart ２桁で表示しそれに満たなければ0を追加する※文字列にしか使えない
+          const minutesFormatted = String(minutes).padStart(2, '0');
+          const secondsFormatted = String(seconds).padStart(2, '0');
+
+          timer.textContent = `${minutesFormatted}:${secondsFormatted}`;
+        }
+
+        btn.addEventListener('click', () => {
+          endTime = new Date().getTime() + 3 * 1000;
+
+          // ボタンを押した時にボタンをdisabledにする
+          btn.disabled = true;
+
+          intervalId = setInterval(check, 100);
+        });
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>スタイルをつける</p>
+    <pre>
+      <code>
+        @charset "utf-8";
+
+        body {
+          background: #e6f6ff;
+        }
+
+        main {
+          width: 320px;
+          background: #fff;
+          margin: 16px auto 0;
+          padding: 16px;
+        }
+
+        p {
+          margin: 0;
+          font-family:'Courier New', Courier, monospace;
+          font-size: 40px;
+          background: #ddd;
+          padding: 32px 0;
+          text-align: center;
+        }
+
+        button {
+          all: unset;
+          background: #08c;
+          margin-top: 16px;
+          width: 100%;
+          text-align: center;
+          padding: 16px 0;
+          color: #fff;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        button:hover {
+          opacity: .6;
+        }
+
+        button:active {
+          opacity: .4;
+        }
+
+        .inactive {  disabledの時につけるスタイルを用意してつけ外しする
+          background: #ddd;
+          color: #444;
+          cursor: default;
+        }
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>disabeled時ボタンにマウスホバーした時のスタイル</p>
+    <pre>
+      <code>
+        .inactive:hover {
+          opacity: 1;
+        }
+        １に戻す
+      </code>
+    </pre>
+  <section>
+    <p>disabledの時クラスをつけ外しする</p>
+    <pre>
+      <code>
+        if (countDown < 0) {
+          clearInterval(intervalId);
+          countDown = 3 * 1000;
+          // countDownが0になった時disabbledをfalseにする
+          btn.disabled = false;
+          btn.classList.remove('inactive');
+        }
+
+        btn.addEventListener('click', () => {
+          endTime = new Date().getTime() + 3 * 1000;
+      
+          // ボタンを押した時にボタンをdisabledにする
+          btn.disabled = true;
+          btn.classList.add('inactive');
+      
+          intervalId = setInterval(check, 100);
+        });
+      </code>
+    </pre>
+  </section>
+  <h2 id="quiz">３択クイズ</h2>
+  <section>
+    <p>htmlでマークアップする</p>
+    <pre>
+      <code>
+        &lt;main&gt;
+        &lt;h1&gt;三択クイズ&lt;/h1&gt;
+        &lt;section&gt;
+          &lt;h2&gt;1の正解は？&lt;/h2&gt;
+          &lt;ul&gt;
+          &lt;li class=&quot;correct&quot;&gt;選択肢 A&lt;/li&gt;
+          &lt;li class=&quot;wrong&quot;&gt;選択肢 B&lt;/li&gt;
+          &lt;li class=&quot;wrong&quot;&gt;選択肢 C&lt;/li&gt;
+      &lt;/ul&gt;
+        &lt;/section&gt;
+    
+      &lt;/main&gt;
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>スタイルをつける</p>
+    <pre>
+      <code>
+        main {
+          width: 320px;
+          margin: 32px auto 0;
+        }
+        
+        h1 {
+          margin: 0;
+          border-bottom: 1px solid #ccc;
+          font-size: 20px;
+          text-align: center;
+          padding-bottom: 8px;
+        }
+        
+        h2 {
+          margin: 0;
+          font-size: 16px;
+        }
+        
+        li {
+          cursor: pointer;
+        }
+        
+        section {
+          margin-top: 16px;
+        }
+        
+        .correct {
+          color: green;
+        }
+        
+        .correct::after {  after擬似クラスでクラスがついている時に文字を追加する
+          content: ' - 正解！'
+        }
+        
+        .wrong {
+          color: red;
+        }
+        
+        .wrong::after {
+          content: ' - 不正解...'
+        }
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>要素をdom操作で生成する</p>
+    <pre>
+      <code>
+        const quiz = ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 0];
+
+        function render(quiz) {
+          const main = document.querySelector('main');
+
+          const section = document.createElement('section');
+          const h2 = document.createElement('h2');
+          h2.textContent = quiz[0];
+
+          const ul = document.createElement('ul');
+
+          section.appendChild(h2);  appendChildは追加する要素の最後の子要素として追加される
+          section.appendChild(ul);  なので追加する順番に気をつける
+          main.appendChild(section);
+          }
+
+          render(quiz);
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>li要素を作ってそのテキストを配列から取得して表示する</p>
+    <pre>
+      <code>
+        const li1 = document.createElement('li');
+        li1.textContent = quiz[1];
+        const li2 = document.createElement('li');
+        li2.textContent = quiz[2];
+        const li3 = document.createElement('li');
+        li3.textContent = quiz[3];
+
+        ul.appendChild(li1);
+        ul.appendChild(li2);
+        ul.appendChild(li3);
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>正解か不正解かの判定をする</p>
+    <pre>
+      <code>
+        const quiz = ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 0];
+
+        function render(quiz) {
+          const main = document.querySelector('main');
+
+          const section = document.createElement('section');
+          const h2 = document.createElement('h2');
+          h2.textContent = quiz[0];
+
+          const ul = document.createElement('ul');
+          const li1 = document.createElement('li');
+          li1.textContent = quiz[1];
+          li1.addEventListener('click', () => {
+            if (quiz[4] === 0) {
+              li1.classList.add('correct');
+            }else {
+              li1.classList.add('wrong');
+            }
+          });
+          const li2 = document.createElement('li');
+          li2.textContent = quiz[2];
+          li2.addEventListener('click', () => {
+            if (quiz[4] === 1) {
+              li2.classList.add('correct');
+            }else {
+              li2.classList.add('wrong');
+            }
+          });
+          const li3 = document.createElement('li');
+          li3.textContent = quiz[3];
+          li3.addEventListener('click', () => {
+            if (quiz[4] === 2) {
+              li3.classList.add('correct');
+            }else {
+              li3.classList.add('wrong');
+            }
+          });
+
+          ul.appendChild(li1);
+          ul.appendChild(li2);
+          ul.appendChild(li3);
+
+          section.appendChild(h2);
+          section.appendChild(ul);
+          main.appendChild(section);
+
+
+        }
+
+        render(quiz);
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>関数で配列を呼び出す時forEachを使うテクニック</p>
+    <pre>
+      <code>
+        const quizzes = [
+          ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 0],
+          ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 1],
+          ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 2],
+        ];
+
+        // render(quizzes[0]);
+        // render(quizzes[1]);  配列を呼び出す時このように呼び出すが増えた時に面倒
+        // render(quizzes[2]);
+      
+        quizzes.forEach(quiz => {  forEachを使えば同じように動作することができる
+          render(quiz);
+        });
+
+        
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>for文で繰り返し処理を使うテクニック</p>
+    <pre>
+      <code>
+        const quizzes = [
+          ['1の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 0],
+          ['2の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 1],
+          ['3の正解は？', '選択肢 A', '選択肢 B', '選択肢 C', 2],
+        ];
+
+        function render(quiz) { ここで引数に入ってくるquizはひとつひとつの配列。名前はなんでも良い
+          const main = document.querySelector('main');  つけた名前で関数の中で使える
+          関数を呼び出すときに引数に入れる名前と同じじゃなくてもいい。でもわかりやすいように
+          同じにしておくと良い。
+
+          const section = document.createElement('section');
+          const h2 = document.createElement('h2');
+          h2.textContent = quiz[0];
+
+          const ul = document.createElement('ul');
+          
+          for (let i = 0; i < quiz.length - 2; i++) {
+            const li = document.createElement('li');
+            li.textContent = quiz[i + 1];
+            li.addEventListener('click', () => {
+              if (quiz[4] === i) {
+                li.classList.add('correct');
+              }else {
+                li.classList.add('wrong');
+              }
+            });
+            ul.appendChild(li);
+          }
+          // const li1 = document.createElement('li');  ここから下の部分をスッキリまとめた
+          // li1.textContent = quiz[1];
+          // li1.addEventListener('click', () => {
+          //   if (quiz[4] === 0) {
+          //     li1.classList.add('correct');
+          //   }else {
+          //     li1.classList.add('wrong');
+          //   }
+          // });
+          // const li2 = document.createElement('li');
+          // li2.textContent = quiz[2];
+          // li2.addEventListener('click', () => {
+          //   if (quiz[4] === 1) {
+          //     li2.classList.add('correct');
+          //   }else {
+          //     li2.classList.add('wrong');
+          //   }
+          // });
+          // const li3 = document.createElement('li');
+          // li3.textContent = quiz[3];
+          // li3.addEventListener('click', () => {
+          //   if (quiz[4] === 2) {
+          //     li3.classList.add('correct');
+          //   }else {
+          //     li3.classList.add('wrong');
+          //   }
+          // });
+
+          // ul.appendChild(li1);
+          // ul.appendChild(li2);
+          // ul.appendChild(li3);
+
+          section.appendChild(h2);
+          section.appendChild(ul);
+          main.appendChild(section);
+        }
+
+        quizzes.forEach(quiz => {
+          render(quiz);  配列を関数の引数で全部一気に入れるテクニック
+        });
+      </code>
+    </pre>
+  </section>
+  <h2 id="slideshow">スライドショー</h2>
+  <section>
+    <p>for文で繰り返し処理、currentIndex番目を表示させる</p>
+    <pre>
+      <code>
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+        const slide = document.getElementById('slide');
+        const thumbnails = document.querySelectorAll('.thumbnail');  querySelectorAllで取得した要素は配列のように取り出すことができる。例thumbnails[0]というようにできる
+        let currentIndex = 0;
+
+        function addClass() {
+          thumbnails.forEach(thumbnail => {  最初に全部のクラスを外してからcurrentIndex番目につける
+            thumbnail.classList.remove('active');
+          });
+          thumbnails[currentIndex].classList.add('active');
+        }
+
+        function addDisabled() {
+          prev.disabled = false;  はじめに全部のdisabledを外してから該当のものにつける
+          next.disabled = false;
+          if (currentIndex === 0) {
+            prev.disabled = true;
+          }
+          if (currentIndex === 2) {
+            next.disabled = true;
+          }
+        }
+
+        function showSlides() {
+          for (let i = 0; i < thumbnails.length; i++) {
+            if (currentIndex === i) {
+              slide.src = thumbnails[i].src;  配列の様に取り出せる
+              addDisabled();
+              addClass();
+            }
+          }
+        }
+
+        next.addEventListener('click', () => {
+          currentIndex++;
+          showSlides();
+        });
+
+        prev.addEventListener('click', () => {
+          currentIndex--;
+          showSlides();
+        });
+
+        for (let i = 0; i < thumbnails.length; i++) {
+          thumbnails[i].addEventListener('click', () => {
+            currentIndex = i;  繰り返し処理で短く書くことができるiはスライドのcurrentIndexと指定。
+            showSlides();
+          });
+
+          
+        }
+      </code>
+    </pre>
+  </section>
+  <h2 id="memo">メモ帳アプリ</h2>
+  <section>
+    <p>htmlでマークアップする</p>
+    <pre>
+      <code>
+        &lt;main&gt;
+          &lt;h1&gt;メモ帳&lt;/h1&gt;
+          &lt;textarea&gt;&lt;/textarea&gt;
+          &lt;div&gt;
+            &lt;span&gt;保存しました&lt;/span&gt;
+            &lt;button&gt;削除&lt;/button&gt;
+            &lt;button&gt;保存&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/main&gt;
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>cssでスタイリングする</p>
+    <pre>
+      <code>
+        body {
+          font-family: Verdana, 'Geneva', Tahoma, sans-serif;
+        }
+        
+        main {
+          width: 360px;
+          margin: 16px auto;
+        }
+        
+        h1 {
+          margin: 0;
+          font-size: 22px;
+          text-align: center;
+        }
+        
+        textarea {
+          all: unset;
+          border: 1px solid #aaa;
+          width: 100%;
+          margin-top: 8px;
+          height: 160px;
+          box-sizing: border-box;
+          font-size: 16px;  /*textareaの中のテキストのフォントサイズを変えれる */
+          padding: 8px;  /*テキストエリアの中のpaddingを指定できる*/
+        }
+        
+        .container {
+          margin-top: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        
+        span {
+          font-size: 14px;
+          transition: opacity 300ms;
+          opacity: 0; /*最初は見えていない状態なので隠しておく。ふわっとtransition
+          させたいのでopacityを使う*/
+        }
+        
+        button {
+          all: unset;
+          padding: 4px 16px;
+          border: 1px solid #aaa;
+          border-radius: 4px;
+          background: #eee;
+          font-size: 14px;
+          cursor: pointer;
+        }
+       
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ローカルストレージに保存する、１秒後に動作させる処理</p>
+    <pre>
+      <code>
+        const save = document.getElementById('save');
+        const text = document.getElementById('text');
+        const message = document.getElementById('message');
+        
+        save.addEventListener('click', () => {
+          localStorage.setItem('memo', text.value);ローカルストレージに保存引数にキーと値を入れる
+          message.classList.add('appear');
+
+          setTimeout(() => {  １秒後にクラスを外す処理
+            message.classList.remove('appear');
+          }, 1000);
+        });
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ローカルストレージから呼び出す、更新ボタンを押しても消えない様にする</p>
+    <pre>
+      <code>
+        if (localStorage.getItem('memo') === null) {
+          text.value = '';
+        }else {
+          text.value = localStorage.getItem('memo');
+        }  更新ボタンを押したときローカルストレージに保存されたデータをテキストボックスに表示させる
+        もしローカルストレージに何も保存されていなければ空白にする
+      </code>
+    </pre>
+  </section>
+  <section>
+    <p>ローカルストレージから消す、確認ダイアログを出す</p>
+    <pre>
+      <code>
+        const save = document.getElementById('save');
+        const clear = document.getElementById('clear');
+        const text = document.getElementById('text');
+        const message = document.getElementById('message');
+      
+        if (localStorage.getItem('memo') === null) {
+          text.value = '';
+        }else {
+          text.value = localStorage.getItem('memo');
+        }
+        
+        save.addEventListener('click', () => {
+          localStorage.setItem('memo', text.value);
+          message.classList.add('appear');
+          setTimeout(() => {
+            message.classList.remove('appear');
+          }, 1000);
+        });
+      
+        clear.addEventListener('click', () => {
+          if (confirm('本当に削除しますか？') === true) { ダイアログを出してOKが押されたら消す
+            localStorage.removeItem('memo');
+            text.value = '';
+          }
+        });
+      </code>
+    </pre>
+  </section>
 </body>
 </html>
